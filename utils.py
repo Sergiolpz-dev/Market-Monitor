@@ -1,0 +1,65 @@
+import finnhub
+import time
+from datetime import datetime, timedelta
+from transformers import pipeline
+import pandas as pd
+
+# ===============================
+#  FUNCIONES
+# ===============================
+
+# Crea y retorna un cliente de la API de Finnhub usando la clave API proporcionada
+def crear_cliente(api_key):
+    return finnhub.Client(api_key=api_key)
+
+# Obtiene la cotización actual (precio y datos relacionados) de un símbolo bursátil
+def get_quote(symbol, client):
+    try:
+        return client.quote(symbol)
+    except:
+        return None
+
+# Obtiene el perfil de la empresa (información básica como nombre, sector, website, etc.)
+def get_profile(symbol, client):
+    try:
+        return client.company_profile2(symbol=symbol) 
+    except:
+        return None
+
+# Obtiene las tendencias de recomendaciones de analistas (comprar, mantener, vender) para un símbolo
+def get_recommendations(symbol, client):
+    try:
+        data = client.recommendation_trends(symbol)
+        if data:
+            return data[0]
+        return None
+    except:
+        return None
+
+# Obtiene las noticias más recientes (últimos 5 días) sobre la empresa del símbolo proporcionado
+def get_news(symbol, client):
+    try:
+        start = (datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')
+        end = datetime.now().strftime('%Y-%m-%d')
+        return client.company_news(symbol, _from=start, to=end)
+    except:
+        return []
+
+# Genera un resumen automático del texto proporcionado usando un modelo de IA de transformers
+def summarize(text, summarizer):
+    try:
+        return summarizer(text, max_length=60, min_length=20, do_sample=False)[0]['summary_text']
+    except:
+        return "No summary available."
+
+# Ordena los resultados por capitalización de mercado de mayor a menor y retorna un DataFrame de Pandas
+def sortByMarketCap(results):
+    results = sorted(
+        results,
+        key=lambda x: (x['market_cap'] is None, x['market_cap'] or 0),
+        reverse=True
+    )
+    # Opcional: Configurar Pandas para mostrar números grandes sin notación científica
+    pd.options.display.float_format = '{:,.0f}'.format
+    df = pd.DataFrame(results)
+    return df
