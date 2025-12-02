@@ -36,21 +36,6 @@ def get_recommendations(symbol, client):
     except:
         return None
 
-# Obtiene las noticias más recientes (últimos 5 días) sobre la empresa del símbolo proporcionado
-def get_news(symbol, client):
-    try:
-        start = (datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')
-        end = datetime.now().strftime('%Y-%m-%d')
-        return client.company_news(symbol, _from=start, to=end)
-    except:
-        return []
-
-# Genera un resumen automático del texto proporcionado usando un modelo de IA de transformers
-def summarize(text, summarizer):
-    try:
-        return summarizer(text, max_length=60, min_length=20, do_sample=False)[0]['summary_text']
-    except:
-        return "No summary available."
 
 # Ordena los resultados por capitalización de mercado de mayor a menor y retorna un DataFrame de Pandas
 def sortByMarketCap(results):

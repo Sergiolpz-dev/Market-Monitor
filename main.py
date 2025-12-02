@@ -23,9 +23,6 @@ from data import NASDAQ100
 # Cliente Finnhub
 client = crear_cliente(API_KEY) 
 
-# IA: resumen noticias
-# summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-
 # Resultados
 unsortedResults = []
 
@@ -33,19 +30,10 @@ n_empresas=20
 
 print(f"\n📊 Obteniendo datos del Nasdaq {n_empresas}...\n")
 
-for symbol in NASDAQ100[:n_empresas]:  # ← SOLO 10 para ir rápido al principio
+for symbol in NASDAQ100[:n_empresas]:  
     quote = get_quote(symbol, client)
     profile = get_profile(symbol, client)
     reco = get_recommendations(symbol, client)
-    news = get_news(symbol, client)
-
-    # # Resumir 1-2 noticias
-    # headlines = []
-    # for n in news[:2]:
-    #     summary = summarize(n["headline"], summarizer)
-    #     headlines.append(summary)
-
-    
 
     unsortedResults.append({
         "symbol": symbol,
@@ -61,7 +49,7 @@ results = sortByMarketCap(unsortedResults)
 print(results)
 
 # =========================================================================
-# === PARTE AÑADIDA: CONEXIÓN Y GENERACIÓN DE CONTENIDO CON GEMINI ===
+# === CONEXIÓN Y GENERACIÓN DE CONTENIDO CON GEMINI ===
 # =========================================================================
 
 # Inicializar Cliente Gemini
@@ -115,7 +103,7 @@ if client_gemini:
     {datos_md}
     """
     
-   # 3. LLAMADA A LA API DE GEMINI Y ESCRITURA EN ARCHIVO
+    # 3. LLAMADA A LA API DE GEMINI Y ESCRITURA EN ARCHIVO
     try:
         response = client_gemini.models.generate_content(
             model='gemini-2.5-flash',  
