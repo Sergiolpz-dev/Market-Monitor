@@ -1,7 +1,6 @@
 import finnhub
 import pandas as pd
 from datetime import datetime, timedelta
-from transformers import pipeline
 
 # Importación de Google GenAI NECESARIA
 from google import genai 
@@ -11,17 +10,17 @@ from google.genai import types
 import os
 from dotenv import load_dotenv
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Funciones
-from utils import crear_cliente, get_quote, get_profile, get_recommendations, get_news, summarize, sortByMarketCap
+from utils import crear_cliente, get_quote, get_profile, get_recommendations, sortByMarketCap
 # Datos
 from data import NASDAQ100
 
 
 # Cliente Finnhub
-client = crear_cliente(API_KEY) 
+client = crear_cliente(FINNHUB_API_KEY) 
 
 # Resultados
 unsortedResults = []

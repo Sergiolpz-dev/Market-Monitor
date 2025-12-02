@@ -1,7 +1,6 @@
 import finnhub
 import time
 from datetime import datetime, timedelta
-from transformers import pipeline
 import pandas as pd
 
 # ===============================

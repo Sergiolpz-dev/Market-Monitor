@@ -39,8 +39,8 @@ proyecto/
 1. **Clonar el repositorio** (o descargar los archivos)
 
 ```bash
-git clone <url-del-repositorio>
-cd <nombre-del-proyecto>
+git clone https://github.com/Sergiolpz-dev/Market-Monitor.git
+cd Market-Monitor
 ```
 
 2. **Crear un entorno virtual** (recomendado)

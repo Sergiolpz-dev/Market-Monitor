@@ -1,0 +1,6 @@
+finnhub-python
+pandas
+google-genai
+python-dotenv
+lxml
+tabulate
